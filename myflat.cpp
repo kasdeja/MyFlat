@@ -7,16 +7,19 @@
 #include <GL/glut.h>
 
 // światło korytarz
-// lightPos = vec3(lightModelViewMatrix * vec4(125.0 + 50.0, 260.0, 80.0 + 350.0, 1.0));    \
+// lightPos = vec3(lightModelViewMatrix * vec4(125.0 + 50.0, 260.0, 80.0 + 350.0, 1.0));
 
 // światło lampa stoją w małym
-// lightPos = vec3(lightModelViewMatrix * vec4(600.0, 172.0, 14.0, 1.0));    \
+// lightPos = vec3(lightModelViewMatrix * vec4(600.0, 172.0, 14.0, 1.0));
 
 // światło centralne w małym
-// lightPos = vec3(lightModelViewMatrix * vec4(473.0, 260.0, 137.0, 1.0));    \
+// lightPos = vec3(lightModelViewMatrix * vec4(473.0, 260.0, 137.0, 1.0));
 
 // światło w dużym
-// lightPos = vec3(lightModelViewMatrix * vec4(700.0, 260.0, 800.0, 1.0)); \
+// lightPos = vec3(lightModelViewMatrix * vec4(700.0, 260.0, 800.0, 1.0));
+
+// mały wariant 2
+//lightPos = vec3(lightModelViewMatrix * vec4(590.0, 172.0, 14.0, 1.0));  \
 
 const char *vertexShader =
 "                                                                           \
@@ -28,7 +31,7 @@ uniform mat4 lightModelViewMatrix;                                          \
 void main()                                                                 \
 {                                                                           \
     v = vec3(gl_ModelViewMatrix * gl_Vertex);                               \
-    lightPos = vec3(lightModelViewMatrix * vec4(590.0, 172.0, 14.0, 1.0));  \
+    lightPos = vec3(lightModelViewMatrix * vec4(175.0, 260.0, 100.0, 1.0));  \
     N = normalize(gl_NormalMatrix * gl_Normal);                             \
                                                                             \
     gl_FrontColor = gl_Color;                                               \
@@ -82,7 +85,7 @@ void main()                                                                     
 }                                                                                                 \n\
 ";
 
-//    gl_FragColor = vec4(sqrt(color1.x), sqrt(color1.y), sqrt(color1.z), 1.0);   \
+//    gl_FragColor = vec4(sqrt(color1.x), sqrt(color1.y), sqrt(color1.z), 1.0);
 
 struct Vec3
 {
@@ -175,6 +178,7 @@ public:
     void DrawRegal(float ox, float oy, float oz, int rot);
     void DrawKrzeslo(float ox, float oy, float oz, int rot);
     void DrawLampa(float ox, float oy, float oz);
+    void DrawSzuflada(float ox, float oy, float oz, float w, float h, float d);
 
 private:
     void DrawBox(float ox, float oy, float oz, float w, float h, float d);
@@ -554,6 +558,26 @@ void Scene::DrawLampa(float ox, float oy, float oz)
     glPopMatrix();
 }
 
+void Scene::DrawSzuflada(float ox, float oy, float oz, float w, float h, float d)
+{
+    float th = 1.8f;
+
+    glColor3f(0.7f, 0.55f, 0.3f);
+    DrawBox(ox + th, oy, oz + th, w - 2 * th, 0.2, d - 2 * th);
+
+    glColor3f(0.56f, 0.2f, 0.082f);
+    DrawBox(ox,          oy, oz, th, h, d - th);
+    DrawBox(ox + w - th, oy, oz, th, h, d - th);
+
+    DrawBox(ox, oy, oz, w, h, th);
+    DrawBox(ox, oy, oz + d - th, w, h - 4.0f, th);
+
+    glColor3f(0.9f, 0.9f, 0.9f);
+    DrawBox(ox, oy + h - 4.0f, oz + d - th, w, 0.2f, th);
+    DrawBox(ox, oy + h - 0.2f, oz + d - th, w, 0.2f, th);
+    DrawBox(ox, oy + h - 3.8f, oz + d - th, w, 3.6f, 0.2);
+}
+
 void Scene::DrawKrzeslo(float ox, float oy, float oz, int rot)
 {
     glPushMatrix();
@@ -742,12 +766,15 @@ void Scene::DrawGarderoba()
     DrawBox( 57.5f, 172.9f,  0.0f, 105.4f,   1.8f,  50.0f);     // polka 5
     DrawBox( 57.5f, 204.9f,  0.0f, 105.4f,   1.8f,  50.0f);     // polka 6
 
-    //DrawBox(60.7f,  81.1f,   2.0f, 40.0f,   19.0f, 50.0f);    // szuflada 1
-
     DrawBox(164.7f, 101.3f,  0.0f, 83.7f,   1.8f,  50.0f);      // polka 1 nad oponami
     DrawBox(164.7f, 138.6f,  0.0f, 83.7f,   1.8f,  50.0f);      // polka 2 nad oponami
     DrawBox(164.7f, 172.9f,  0.0f, 83.7f,   1.8f,  50.0f);      // polka 2 nad oponami
     DrawBox(164.7f, 204.9f,  0.0f, 83.7f,   1.8f,  50.0f);      // polka 4 nad oponami
+
+
+    DrawBox(109.3f,   81.1f,  0.0f,   1.8f, 20.2f,  50.0f);     // podział półki z szufladami
+    DrawSzuflada( 57.9f, 81.5f, 0.0f, 51.0f,   19.6f, 50.0f);
+    DrawSzuflada(111.5f, 81.5f, 0.0f, 51.0f,   19.6f, 50.0f);
 
     // opony
     glColor3f(0.8f, 0.8f, 0.8f);
@@ -755,7 +782,6 @@ void Scene::DrawGarderoba()
     {
         DrawBox(172.7f, 23.25f * n, 2.0f, 66.0f, 22.5f, 66.0f);       // opona
     }
-
 
     // półki prawo
     /*DrawBox(213.1f,   0.0f,   50.0f,  37.1f, 230.0f,   1.8f);      // bok lewy
