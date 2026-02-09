@@ -853,25 +853,6 @@ void Scene::DrawGarderoba()
     DrawSzuflada(55.7f + p18 + 0.4f, fshh2 + p18 + 0.4f, 0.0f, 51.0f,   fsh3 - 0.8f, fdepth);
     DrawSzuflada(111.5f,             fshh2 + p18 + 0.4f, 0.0f, 51.0f,   fsh3 - 0.8f, fdepth);
 
-/*
-    DrawBox( 55.7f, 230.0f,  0.0f, 194.4f,   1.8f,  50.0f);     // wierzch
-    DrawBox( 57.5f,  36.5f,  0.0f, 105.4f,   1.8f,  50.0f);     // polka 1
-    DrawBox( 57.5f,  79.3f,  0.0f, 105.4f,   1.8f,  50.0f);     // polka 2
-    DrawBox( 57.5f, 101.3f,  0.0f, 105.4f,   1.8f,  50.0f);     // polka 3
-    DrawBox( 57.5f, 138.6f,  0.0f, 105.4f,   1.8f,  50.0f);     // polka 4
-    DrawBox( 57.5f, 172.9f,  0.0f, 105.4f,   1.8f,  50.0f);     // polka 5
-    DrawBox( 57.5f, 204.9f,  0.0f, 105.4f,   1.8f,  50.0f);     // polka 6
-
-    DrawBox(164.7f, 101.3f,  0.0f, 83.7f,   1.8f,  50.0f);      // polka 1 nad oponami
-    DrawBox(164.7f, 138.6f,  0.0f, 83.7f,   1.8f,  50.0f);      // polka 2 nad oponami
-    DrawBox(164.7f, 172.9f,  0.0f, 83.7f,   1.8f,  50.0f);      // polka 2 nad oponami
-    DrawBox(164.7f, 204.9f,  0.0f, 83.7f,   1.8f,  50.0f);      // polka 4 nad oponami
-*/
-
-    //DrawBox(109.3f,   81.1f,  0.0f,   1.8f, 20.2f,  50.0f);     // podział półki z szufladami
-    //DrawSzuflada( 57.9f, 81.5f, 0.0f, 51.0f,   19.6f, 50.0f);
-    //DrawSzuflada(111.5f, 81.5f, 0.0f, 51.0f,   19.6f, 50.0f);
-
     // opony
     glColor3f(0.8f, 0.8f, 0.8f);
     for(int n = 0; n < 4; n++)
@@ -919,24 +900,6 @@ void Scene::DrawGarderoba()
 
         once = false;
     }
-
-    // półki prawo
-    /*DrawBox(213.1f,   0.0f,   50.0f,  37.1f, 230.0f,   1.8f);      // bok lewy
-    DrawBox(213.1f,   0.0f,  124.6f,  37.1f, 230.0f,   1.8f);      // bok środek
-    DrawBox(213.1f,  45.0f,   88.2f,  37.1f, 154.0f,   1.8f);      // bok środek 2
-    DrawBox(213.1f, 170.0f,  162.8f,  37.1f,  60.0f,   1.8f);      // bok prawy
-    DrawBox(213.1f, 230.0f,   50.0f,  37.1f,   1.8f, 114.6f);      // wierzch
-
-    DrawBox(213.1f,  45.0f,   51.8f,  37.1f,   1.8f,  72.8f);      // polka 1
-    DrawBox(213.1f, 168.33333f,  126.4f,  37.1f,   1.8f,  38.2f);      // polka 2
-    DrawBox(213.1f, 199.16666f,  126.4f,  37.1f,   1.8f,  38.2f);      // polka 2
-
-    for(int n = 1; n <= 5; n++)
-    {
-        float h = 45.0f + 185.0 / 6 * n;
-        DrawBox(213.1f, h,  51.8f,  37.1f,   1.8f,  72.8f);      // polka 2
-    }*/
-//     DrawBox(213.1f, 201.0f,   51.8f,  37.1f,   1.8f, 112.8f);      // polka 2
 }
 
 void Scene::DrawBox(float ox, float oy, float oz, float w, float h, float d)
