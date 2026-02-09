@@ -731,33 +731,129 @@ void Scene::DrawDoors(float ox, float oy, float oz, int rot, int ns, bool left)
 
 void Scene::DrawGarderoba()
 {
+    static bool once = true;
+
     glColor3f(0.8f, 0.3f, 0.0f);
     DrawBox(0.0f,  -1.0f, 0.0f, 250.2f, 1.1f, 164.6f);          // parkiet
 
     glColor3f(0.9f, 0.9f, 0.9f);
-    DrawBox(2.0f,   0.0f, 98.8f, 61.0f, 86.0f, 59.8f);         // suszarka
+    DrawBox(2.0f,   0.0f, 98.8f, 61.0f, 86.0f, 59.8f);          // suszarka
 
     DrawBox(60.7f,  0.0f, 2.0f, 40.0f, 32.5f, 61.0f);           // pudełko 1 dół przód
     DrawBox(103.7f, 0.0f, 2.0f, 40.0f, 32.5f, 61.0f);           // pudełko 2 dół przód
 
+    // stałe
+    const float p18 = 1.8f;  // grubość płyty 18mm
+    const float p28 = 2.8f;  // grubość płyty 28mm
+
+    const float ht = 230.0f; // wysokość całkowita szafy
+
     // półki lewo
     glColor3f(0.56f, 0.2f, 0.082f);
-    DrawBox(0.0f, 0.0f,  30.3f,  55.7f, 230.0f,   1.8f);        // bok prawy
-    DrawBox(0.0f, 0.0f, 162.8f,  55.7f, 230.0f,   1.8f);        // bok lewy
-    DrawBox(0.0f, 0.0f,  93.0f,  55.7f, 230.0f,   1.8f);        // srodek
 
-    DrawBox(0.0f, 230.0f,  30.3f, 55.7f,   1.8f, 134.3f);       // wierzch
-    DrawBox(0.0f,  90.0f,  94.8f, 55.7f,   1.8f,  68.0f);       // polka 1 nad pralką
-    DrawBox(0.0f, 128.3f,  94.8f, 55.7f,   1.8f,  68.0f);       // polka 2 nad pralką
-    DrawBox(0.0f, 166.6f,  94.8f, 55.7f,   1.8f,  68.0f);       // polka 3 nad pralką
-    DrawBox(0.0f, 204.9f,  94.8f, 55.7f,   1.8f,  68.0f);       // polka 4 nad pralką
-    DrawBox(0.0f,  36.5f,  30.3f, 55.7f,   1.8f,  68.0f);       // polka 1
-    DrawBox(0.0f, 204.9f,  30.3f, 55.7f,   1.8f,  68.0f);       // polka 2
+    float pth = p18; // grubość wierzchu
+
+    float pdepth = 55.7f;
+    float pwidth = 134.3f;
+
+    float psh1 = 90.f;  // wysokość półki nad suszarką 1
+    float psh2 = 36.5f; // wysokość półki nad suszarką 2
+    float psh3 = 24.5f; // wysokość półki nad suszarką 3 // 33.5
+    float psh4 = 36.5f; // wysokość półki nad suszarką 4
+    float psh5 = ht - pth - (psh1 + p18 + psh2 + p18 + psh3 + p18 + psh4 + p18); // wysokość półki nad suszarką 5
+
+    float pw1 = 60 + 2 * 4;             // szerokość suszarki + 4cm z każdej strony
+    float pw2 = pwidth - pw1 - 3 * p18; // szerokość wnęki na wieszaki
+
+    float pwh1 = 36.5f;                                 // wysokość pólki 1 pod wieszakami
+    float pwh2 = ht - pth - (pwh1 + p18 + psh5 + p18);  // wysokość półki 2 na wieszaki
+    float pwh3 = psh5;                                  // wysokość półki 3 nad wieszaki
+
+    DrawBox(0.0f, 0.0f,      30.3f,                 pdepth, ht - pth, p18); // bok prawy
+    DrawBox(0.0f, 0.0f,      30.3f + pwidth - p18,  pdepth, ht - pth, p18); // bok lewy
+    DrawBox(0.0f, 0.0f,      30.3f + pw2 + p18,     pdepth, ht - pth, p18); // srodek
+
+    //glColor3f(0.56f, 0.56f, 0.082f);
+    glColor3f(0.56f, 0.2f, 0.082f);
+
+    float pshh1 = psh1;
+    float pshh2 = psh1 + p18 + psh2;
+    float pshh3 = psh1 + p18 + psh2 + p18 + psh3;
+    float pshh4 = psh1 + p18 + psh2 + p18 + psh3 + p18 + psh4;
+
+    DrawBox(0.0f,  ht - pth, 30.3f,                 pdepth, pth, pwidth);   // wierzch
+    DrawBox(0.0f,  pshh1,    30.3f + pw2 + 2 * p18, pdepth, p18, pw1);      // półka 1 nad suszarką
+    DrawBox(0.0f,  pshh2,    30.3f + pw2 + 2 * p18, pdepth, p18, pw1);      // półka 2 nad suszarką
+    DrawBox(0.0f,  pshh3,    30.3f + pw2 + 2 * p18, pdepth, p18, pw1);      // półka 3 nad suszarką
+    DrawBox(0.0f,  pshh4,    30.3f + pw2 + 2 * p18, pdepth, p18, pw1);      // półka 4 nad suszarką
+
+    float pwhh1 = pwh1;
+    float pwhh2 = pwh1 + p18 + pwh2;
+
+    DrawBox(0.0f,  pwhh1,    30.3f + p18, pdepth, p18, pw2);      // półka 1 wieszaki
+    DrawBox(0.0f,  pwhh2,    30.3f + p18, pdepth, p18, pw2);      // półka 2 wieszaki
 
     // półki przód
-    DrawBox( 55.7f,   0.0f,  0.0f,   1.8f, 230.0f,  50.0f);     // bok lewy
-    DrawBox(162.9f,   0.0f,  0.0f,   1.8f, 230.0f,  50.0f);     // bok środek
-    DrawBox(248.4f,   0.0f,  0.0f,   1.8f, 230.0f,  50.0f);     // bok prawy
+    glColor3f(0.56f, 0.2f, 0.082f);
+
+    float fwidth = 194.5f;
+    float fdepth = 50.0f;
+
+    float fw2 = 83.7f;                  // szerokość nad oponami
+    float fw1 = fwidth - fw2 - 3 * p18; // szerokość nad szulfadami
+    float fs  = (fw1 - p18) / 2;        // szerokość wnęki na szufladę
+
+    float fsh1 = 36.5f;
+    float fsh2 = 36.5f;
+    float fsh3 = 20.2f + 5.2f;
+    float fsh4 = 36.5;
+    float fsh5 = 27.0;
+    float fsh6 = 31.0f;
+    float fsh7 = ht - pth - (fsh1 + fsh2 + fsh3 + fsh4 + fsh5 + fsh6 + 6 * p18);
+
+    float foh1 = 102.0f;
+    float foh2 = 36.5f;
+    float foh3 = 27.0f;
+    float foh4 = 31.0f;
+    float foh5 = ht - pth - (foh1 + foh2 + foh3 + foh4 + 4 * p18);
+
+    DrawBox(55.7f,                0.0f, 0.0f,   p18, ht - pth, fdepth); // bok lewy
+    DrawBox(55.7f + fwidth - p18, 0.0f, 0.0f,   p18, ht - pth, fdepth); // bok prawy
+    DrawBox(55.7f + fw1 + p18,    0.0f, 0.0f,   p18, ht - pth, fdepth); // bok środek
+
+    float fshh1 = fsh1;
+    float fshh2 = fsh1 + p18 + fsh2;
+    float fshh3 = fsh1 + p18 + fsh2 + p18 + fsh3;
+    float fshh4 = fsh1 + p18 + fsh2 + p18 + fsh3 + p18 + fsh4;
+    float fshh5 = fsh1 + p18 + fsh2 + p18 + fsh3 + p18 + fsh4 + p18 + fsh5;
+    float fshh6 = fsh1 + p18 + fsh2 + p18 + fsh3 + p18 + fsh4 + p18 + fsh5 + p18 + fsh6;
+
+    float fohh1 = foh1;
+    float fohh2 = foh1 + p18 + foh2;
+    float fohh3 = foh1 + p18 + foh2 + p18 + foh3;
+    float fohh4 = foh1 + p18 + foh2 + p18 + foh3 + p18 + foh4;
+
+    //glColor3f(0.56f, 0.56f, 0.082f);
+    glColor3f(0.56f, 0.2f, 0.082f);
+    DrawBox(55.7f,       ht - pth, 0.0f,         fwidth, pth, fdepth);     // wierzch
+    DrawBox(55.7f + p18, fshh1,    0.0f,         fw1,    p18, fdepth);     // pólka 1
+    DrawBox(55.7f + p18, fshh2,    0.0f,         fw1,    p18, fdepth);     // pólka 2
+    DrawBox(55.7f + p18, fshh3,    0.0f,         fw1,    p18, fdepth);     // pólka 3
+    DrawBox(55.7f + p18, fshh4,    0.0f,         fw1,    p18, fdepth);     // pólka 4
+    DrawBox(55.7f + p18, fshh5,    0.0f,         fw1,    p18, fdepth);     // pólka 5
+    DrawBox(55.7f + p18, fshh6,    0.0f,         fw1,    p18, fdepth);     // pólka 6
+
+    DrawBox(55.7f + fw1 + 2 * p18, fohh1, 0.0f,  fw2,    p18, fdepth);     // półka 1 nad oponami
+    DrawBox(55.7f + fw1 + 2 * p18, fohh2, 0.0f,  fw2,    p18, fdepth);     // półka 2 nad oponami
+    DrawBox(55.7f + fw1 + 2 * p18, fohh3, 0.0f,  fw2,    p18, fdepth);     // półka 3 nad oponami
+    DrawBox(55.7f + fw1 + 2 * p18, fohh4, 0.0f,  fw2,    p18, fdepth);     // półka 4 nad oponami
+
+
+    DrawBox(55.7f + p18 + fs,   fshh2 + p18,  0.0f,   p18, fsh3, fdepth);     // podział półki z szufladami
+    DrawSzuflada(55.7f + p18 + 0.4f, fshh2 + p18 + 0.4f, 0.0f, 51.0f,   fsh3 - 0.8f, fdepth);
+    DrawSzuflada(111.5f,             fshh2 + p18 + 0.4f, 0.0f, 51.0f,   fsh3 - 0.8f, fdepth);
+
+/*
     DrawBox( 55.7f, 230.0f,  0.0f, 194.4f,   1.8f,  50.0f);     // wierzch
     DrawBox( 57.5f,  36.5f,  0.0f, 105.4f,   1.8f,  50.0f);     // polka 1
     DrawBox( 57.5f,  79.3f,  0.0f, 105.4f,   1.8f,  50.0f);     // polka 2
@@ -770,17 +866,58 @@ void Scene::DrawGarderoba()
     DrawBox(164.7f, 138.6f,  0.0f, 83.7f,   1.8f,  50.0f);      // polka 2 nad oponami
     DrawBox(164.7f, 172.9f,  0.0f, 83.7f,   1.8f,  50.0f);      // polka 2 nad oponami
     DrawBox(164.7f, 204.9f,  0.0f, 83.7f,   1.8f,  50.0f);      // polka 4 nad oponami
+*/
 
-
-    DrawBox(109.3f,   81.1f,  0.0f,   1.8f, 20.2f,  50.0f);     // podział półki z szufladami
-    DrawSzuflada( 57.9f, 81.5f, 0.0f, 51.0f,   19.6f, 50.0f);
-    DrawSzuflada(111.5f, 81.5f, 0.0f, 51.0f,   19.6f, 50.0f);
+    //DrawBox(109.3f,   81.1f,  0.0f,   1.8f, 20.2f,  50.0f);     // podział półki z szufladami
+    //DrawSzuflada( 57.9f, 81.5f, 0.0f, 51.0f,   19.6f, 50.0f);
+    //DrawSzuflada(111.5f, 81.5f, 0.0f, 51.0f,   19.6f, 50.0f);
 
     // opony
     glColor3f(0.8f, 0.8f, 0.8f);
     for(int n = 0; n < 4; n++)
     {
         DrawBox(172.7f, 23.25f * n, 2.0f, 66.0f, 22.5f, 66.0f);       // opona
+    }
+
+    if (once)
+    {
+        printf("lewa strona\n");
+
+        printf("pw1  %f\n", pw1);
+        printf("pw2  %f\n", pw2);
+        printf("\n");
+        printf("psh1 %f\n", psh1);
+        printf("psh2 %f\n", psh2);
+        printf("psh3 %f\n", psh3);
+        printf("psh4 %f\n", psh4);
+        printf("psh5 %f\n", psh5);
+        printf("\n");
+        printf("pwh1 %f\n", pwh1);
+        printf("pwh2 %f\n", pwh2);
+        printf("pwh3 %f\n", pwh3);
+        printf("\n");
+
+        printf("front\n");
+        printf("fw1  %f\n", fw1);
+        printf("fw2  %f\n", fw2);
+        printf("fsh1 %f\n", fsh1);
+        printf("fsh2 %f\n", fsh2);
+        printf("fsh3 %f\n", fsh3);
+        printf("fsh4 %f\n", fsh4);
+        printf("fsh5 %f\n", fsh5);
+        printf("fsh6 %f\n", fsh6);
+        printf("fsh7 %f\n", fsh7);
+
+        printf("foh1 %f\n", foh1);
+        printf("foh2 %f\n", foh2);
+        printf("foh3 %f\n", foh3);
+        printf("foh4 %f\n", foh4);
+        printf("foh5 %f\n", foh5);
+
+        printf("\n");
+        printf("do sufitu %f\n", 270.0f - ht);
+
+        once = false;
     }
 
     // półki prawo
@@ -1087,8 +1224,8 @@ void Engine::Animate()
     m_speed  = m_speed  * 0.9 + m_accel  * 0.1;
     m_speedL = m_speedL * 0.9 + m_accelL * 0.1;
 
-    m_accel  *= 0.7;
-    m_accelL *= 0.7;
+    m_accel  *= 0.27;
+    m_accelL *= 0.27;
 
     glutPostRedisplay();
 }
